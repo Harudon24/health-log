@@ -2,10 +2,10 @@
   "version": 1,
   "updatedAt": "2026-09-12",
   "targets": {
-    "calories": 2100,
-    "protein": 70,
+    "calories": 1900,
+    "protein": 75,
     "fat": 55,
-    "carbs": 275,
+    "carbs": 250,
     "salt": 6,
     "fiber": 22
   },
