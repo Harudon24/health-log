@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-12",
+  "targets": {
+    "calories": 2100,
+    "protein": 70,
+    "fat": 55,
+    "carbs": 275,
+    "salt": 6,
+    "fiber": null
+  },
+  "meals": [
+    {
+      "id": "2026-09-12-breakfast-1",
+      "date": "2026-09-12",
+      "category": "朝食",
+      "name": "バナナ1本 ＋ カロリーメイト4本",
+      "nutrients": {
+        "calories": 490,
+        "protein": 10,
+        "fat": 23,
+        "carbs": 65,
+        "salt": 0.7,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "カロリー・PFCは概算。塩分はカロリーメイトの味が未指定のため約0.7g。"
+    },
+    {
+      "id": "2026-09-12-lunch-1",
+      "date": "2026-09-12",
+      "category": "昼食",
+      "name": "ロメインレタスのシーザーサラダ",
+      "nutrients": {
+        "calories": 90,
+        "protein": 3,
+        "fat": 7,
+        "carbs": 4,
+        "salt": 0.7,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "ドレッシングは約半分。カロリー・PFCは概算。"
+    },
+    {
+      "id": "2026-09-12-snack-1",
+      "date": "2026-09-12",
+      "category": "間食",
+      "name": "バナナ1本 ＋ セブン ひじきと枝豆の豆腐バー1本",
+      "nutrients": {
+        "calories": 255,
+        "protein": 12,
+        "fat": 11,
+        "carbs": 30,
+        "salt": 1,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "カロリー・PFCは概算。豆腐バーの食塩相当量は約1g。"
+    },
+    {
+      "id": "2026-09-12-dinner-1",
+      "date": "2026-09-12",
+      "category": "夕食",
+      "name": "セブン 1/3日分の野菜が摂れるサラダ ＋ 焙煎ごまドレッシング半分 ＋ かき揚げそば ＋ 乾燥わかめ1g",
+      "nutrients": {
+        "calories": 556,
+        "protein": 20,
+        "fat": 23,
+        "carbs": 71,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "そば汁は飲み干していない。カロリー・PFCは概算。実際に摂取した食塩相当量は未確認。"
+    }
+  ]
+}
