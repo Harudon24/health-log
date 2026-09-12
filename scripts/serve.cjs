@@ -1,0 +1,4 @@
+const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const publicFiles=new Set(['index.html','styles.css','data.js','model.js','app.js']);
+http.createServer((req,res)=>{let name;try{name=decodeURIComponent(new URL(req.url,'http://localhost').pathname).replace(/^\/health-log(?=\/)/,'').replace(/^\//,'')||'index.html';}catch{res.writeHead(400).end();return;}if(!publicFiles.has(name)){res.writeHead(404).end('Not found');return;}res.setHeader('Content-Type',{'html':'text/html; charset=utf-8','css':'text/css; charset=utf-8','js':'text/javascript; charset=utf-8'}[name.split('.').pop()]);fs.createReadStream(path.join(root,name)).pipe(res);}).listen(4173,'127.0.0.1',()=>console.log('health-log: http://127.0.0.1:4173/health-log/'));

@@ -1,0 +1,8 @@
+const {test}=require('node:test'),assert=require('node:assert/strict');
+const M=require('../model.js');require('../data.js');
+const seed=()=>structuredClone(globalThis.HealthSeed);
+test('初期記録の合算が指定値と一致し、塩分と食物繊維の欠損を区別する',()=>{const d=M.validate(seed());for(const [k,v] of Object.entries({calories:1391,protein:45,fat:64,carbs:170}))assert.equal(M.total(d.meals,k).value,v);assert.deepEqual(M.total(d.meals,'salt'),{value:2.4,known:3,missing:1,estimated:true});assert.equal(M.total(d.meals,'fiber').known,0);assert.ok(M.total(d.meals,'fat').value/d.targets.fat>1);});
+test('未確認・0・空の1日を区別する',()=>{const d=seed();d.meals[0].nutrients.salt=0;assert.equal(M.total([d.meals[0]],'salt').known,1);assert.equal(M.total([],'salt').known,0);assert.equal(M.total([d.meals[3]],'salt').missing,1);});
+test('月末・年末・うるう年の前日を正しく計算する',()=>{assert.equal(M.shiftDate('2026-01-01',-1),'2025-12-31');assert.equal(M.shiftDate('2024-03-01',-1),'2024-02-29');assert.equal(M.shiftDate('2026-03-01',-1),'2026-02-28');assert.equal(M.validDate('2026-02-30'),false);assert.equal(M.validDate('2026-09-12'),true);});
+test('バックアップの往復で記録と目標が失われない',()=>{assert.deepEqual(M.validate(JSON.parse(JSON.stringify(seed()))),seed());});
+test('不正なバックアップや目標を拒否する',()=>{for(const change of [d=>d.targets.salt=0,d=>d.targets.calories=null,d=>d.meals[0].nutrients.fat=-1,d=>d.meals[0].date='2026-02-30',d=>d.meals[1].id=d.meals[0].id,d=>d.meals[0].name=' ',d=>d.meals[0].estimated='yes']){const d=seed();change(d);assert.throws(()=>M.validate(d));}});

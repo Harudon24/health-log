@@ -1,0 +1,6 @@
+{
+  "name": "health-log",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "test": "node --test tests/model.test.cjs", "start": "node scripts/serve.cjs" }
+}
