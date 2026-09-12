@@ -20,11 +20,11 @@
         "protein": 1,
         "fat": 0,
         "carbs": 23,
-        "salt": null,
+        "salt": 0,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。食塩はバナナ由来を実質0gとして推定。食物繊維は未確認。"
     },
     {
       "id": "2026-09-09-lunch-1",
@@ -36,11 +36,11 @@
         "protein": 21,
         "fat": 10,
         "carbs": 61,
-        "salt": null,
+        "salt": 6.8,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。食塩相当量は商品情報を基に約6.8gとして記録。食物繊維は未確認。"
     },
     {
       "id": "2026-09-09-dinner-1",
@@ -52,11 +52,11 @@
         "protein": 27,
         "fat": 34,
         "carbs": 112,
-        "salt": null,
+        "salt": 3.1,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。栄養値は概算。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。栄養値は概算。食塩相当量は一般的な同等量のカツカレーから約3.1gと推定。食物繊維は未確認。"
     },
     {
       "id": "2026-09-09-snack-1",
@@ -68,11 +68,11 @@
         "protein": 10,
         "fat": 0,
         "carbs": 12,
-        "salt": null,
+        "salt": 0.1,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。食塩相当量は約0.1gとして記録。食物繊維は未確認。"
     },
     {
       "id": "2026-09-09-snack-2",
@@ -84,11 +84,11 @@
         "protein": 9,
         "fat": 22,
         "carbs": 42,
-        "salt": null,
+        "salt": 0.8,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。味が未確認のため食塩は未入力。"
+      "note": "Calories Clubの記録から移行。味が未確認のため、食塩相当量は商品ラインナップの範囲から約0.8gと推定。"
     },
     {
       "id": "2026-09-10-breakfast-1",
@@ -100,11 +100,11 @@
         "protein": 2,
         "fat": 1,
         "carbs": 46,
-        "salt": null,
+        "salt": 0,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。食塩はバナナ由来を実質0gとして推定。食物繊維は未確認。"
     },
     {
       "id": "2026-09-10-lunch-1",
@@ -116,11 +116,11 @@
         "protein": 9,
         "fat": 22,
         "carbs": 42,
-        "salt": null,
+        "salt": 0.8,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。味が未確認のため食塩は未入力。"
+      "note": "Calories Clubの記録から移行。味が未確認のため、食塩相当量は約0.8gと推定。"
     },
     {
       "id": "2026-09-10-lunch-2",
@@ -132,11 +132,11 @@
         "protein": 24,
         "fat": 13,
         "carbs": 76,
-        "salt": null,
+        "salt": 2.5,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。食塩相当量は商品情報を基に約2.5gとして記録。食物繊維は未確認。"
     },
     {
       "id": "2026-09-10-dinner-1",
@@ -148,11 +148,11 @@
         "protein": 20,
         "fat": 2,
         "carbs": 155,
-        "salt": null,
+        "salt": 4.4,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。そうめんは茹で後に塩分が減ること、つゆは全量を飲まない前提で、実摂取の食塩相当量を約4.4gと推定。食物繊維は未確認。"
     },
     {
       "id": "2026-09-11-snack-1",
@@ -164,11 +164,11 @@
         "protein": 1,
         "fat": 0,
         "carbs": 23,
-        "salt": null,
+        "salt": 0,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。食塩はバナナ由来を実質0gとして推定。食物繊維は未確認。"
     },
     {
       "id": "2026-09-11-dinner-1",
@@ -180,11 +180,11 @@
         "protein": 14,
         "fat": 8,
         "carbs": 57,
-        "salt": null,
+        "salt": 2.8,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。汁を全量摂取しない一般的な食べ方を前提に、食塩相当量を約2.8gと推定。食物繊維は未確認。"
     },
     {
       "id": "2026-09-11-other-1",
@@ -196,11 +196,11 @@
         "protein": 0,
         "fat": 0,
         "carbs": 0,
-        "salt": null,
+        "salt": 0,
         "fiber": null
       },
       "estimated": false,
-      "note": "Calories Clubの記録から移行。0kcalとして記録。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。0kcal・食塩0gとして記録。食物繊維は未確認。"
     },
     {
       "id": "2026-09-11-snack-2",
@@ -212,11 +212,11 @@
         "protein": 10,
         "fat": 0,
         "carbs": 12,
-        "salt": null,
+        "salt": 0.1,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。食塩相当量は約0.1gとして記録。食物繊維は未確認。"
     },
     {
       "id": "2026-09-11-snack-3",
@@ -228,11 +228,11 @@
         "protein": 9,
         "fat": 22,
         "carbs": 42,
-        "salt": null,
+        "salt": 0.8,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。味が未確認のため食塩は未入力。"
+      "note": "Calories Clubの記録から移行。味が未確認のため、食塩相当量は約0.8gと推定。"
     },
     {
       "id": "2026-09-11-dinner-2",
@@ -244,11 +244,11 @@
         "protein": 33,
         "fat": 13,
         "carbs": 156,
-        "salt": null,
+        "salt": 4.5,
         "fiber": null
       },
       "estimated": true,
-      "note": "Calories Clubの記録から移行。栄養値は概算。食塩・食物繊維は未確認。"
+      "note": "Calories Clubの記録から移行。そうめんは茹で後に塩分が減ること、つゆは全量を飲まない前提で、卵を含めた実摂取の食塩相当量を約4.5gと推定。食物繊維は未確認。"
     },
     {
       "id": "2026-09-12-breakfast-1",
@@ -264,7 +264,7 @@
         "fiber": null
       },
       "estimated": true,
-      "note": "カロリー・PFCは概算。塩分はカロリーメイトの味が未指定のため約0.7g。"
+      "note": "カロリー・PFCは概算。塩分はカロリーメイトの味が未指定のため約0.7gと推定。"
     },
     {
       "id": "2026-09-12-lunch-1",
@@ -280,7 +280,7 @@
         "fiber": null
       },
       "estimated": true,
-      "note": "ドレッシングは約半分。カロリー・PFCは概算。"
+      "note": "ドレッシングは約半分。カロリー・PFC・食塩は概算。"
     },
     {
       "id": "2026-09-12-snack-1",
@@ -308,11 +308,11 @@
         "protein": 20,
         "fat": 23,
         "carbs": 71,
-        "salt": null,
+        "salt": 3.2,
         "fiber": null
       },
       "estimated": true,
-      "note": "そば汁は飲み干していない。カロリー・PFCは概算。実際に摂取した食塩相当量は未確認。"
+      "note": "そば汁は飲み干していない。カロリー・PFCは概算。サラダ、ドレッシング、わかめ、そばの表示値と汁を残した食べ方から、実摂取の食塩相当量を約3.2gと推定。"
     }
   ]
 }
