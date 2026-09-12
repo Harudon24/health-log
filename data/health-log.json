@@ -11,6 +11,246 @@
   },
   "meals": [
     {
+      "id": "2026-09-09-breakfast-1",
+      "date": "2026-09-09",
+      "category": "朝食",
+      "name": "バナナ1本",
+      "nutrients": {
+        "calories": 90,
+        "protein": 1,
+        "fat": 0,
+        "carbs": 23,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-09-lunch-1",
+      "date": "2026-09-09",
+      "category": "昼食",
+      "name": "セブン 冷し辛麺",
+      "nutrients": {
+        "calories": 405,
+        "protein": 21,
+        "fat": 10,
+        "carbs": 61,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-09-dinner-1",
+      "date": "2026-09-09",
+      "category": "夕食",
+      "name": "ロースカツカレー",
+      "nutrients": {
+        "calories": 870,
+        "protein": 27,
+        "fat": 34,
+        "carbs": 112,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。栄養値は概算。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-09-snack-1",
+      "date": "2026-09-09",
+      "category": "間食",
+      "name": "オイコス ブルーベリー1個",
+      "nutrients": {
+        "calories": 92,
+        "protein": 10,
+        "fat": 0,
+        "carbs": 12,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-09-snack-2",
+      "date": "2026-09-09",
+      "category": "間食",
+      "name": "カロリーメイト4本",
+      "nutrients": {
+        "calories": 400,
+        "protein": 9,
+        "fat": 22,
+        "carbs": 42,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。味が未確認のため食塩は未入力。"
+    },
+    {
+      "id": "2026-09-10-breakfast-1",
+      "date": "2026-09-10",
+      "category": "朝食",
+      "name": "バナナ2本",
+      "nutrients": {
+        "calories": 180,
+        "protein": 2,
+        "fat": 1,
+        "carbs": 46,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-10-lunch-1",
+      "date": "2026-09-10",
+      "category": "昼食",
+      "name": "カロリーメイト4本",
+      "nutrients": {
+        "calories": 400,
+        "protein": 9,
+        "fat": 22,
+        "carbs": 42,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。味が未確認のため食塩は未入力。"
+    },
+    {
+      "id": "2026-09-10-lunch-2",
+      "date": "2026-09-10",
+      "category": "昼食",
+      "name": "セブンの親子丼",
+      "nutrients": {
+        "calories": 516,
+        "protein": 24,
+        "fat": 13,
+        "carbs": 76,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-10-dinner-1",
+      "date": "2026-09-10",
+      "category": "夕食",
+      "name": "揖保乃糸そうめん4束 ＋ ストレートつゆ200ml",
+      "nutrients": {
+        "calories": 770,
+        "protein": 20,
+        "fat": 2,
+        "carbs": 155,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-11-snack-1",
+      "date": "2026-09-11",
+      "category": "間食",
+      "name": "バナナ1本",
+      "nutrients": {
+        "calories": 90,
+        "protein": 1,
+        "fat": 0,
+        "carbs": 23,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-11-dinner-1",
+      "date": "2026-09-11",
+      "category": "夕食",
+      "name": "きつねそば",
+      "nutrients": {
+        "calories": 354,
+        "protein": 14,
+        "fat": 8,
+        "carbs": 57,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-11-other-1",
+      "date": "2026-09-11",
+      "category": "その他",
+      "name": "セブン 強炭酸水レモン 1L",
+      "nutrients": {
+        "calories": 0,
+        "protein": 0,
+        "fat": 0,
+        "carbs": 0,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": false,
+      "note": "Calories Clubの記録から移行。0kcalとして記録。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-11-snack-2",
+      "date": "2026-09-11",
+      "category": "間食",
+      "name": "オイコス ブルーベリー1個",
+      "nutrients": {
+        "calories": 92,
+        "protein": 10,
+        "fat": 0,
+        "carbs": 12,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。食塩・食物繊維は未確認。"
+    },
+    {
+      "id": "2026-09-11-snack-3",
+      "date": "2026-09-11",
+      "category": "間食",
+      "name": "カロリーメイト4本",
+      "nutrients": {
+        "calories": 400,
+        "protein": 9,
+        "fat": 22,
+        "carbs": 42,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。味が未確認のため食塩は未入力。"
+    },
+    {
+      "id": "2026-09-11-dinner-2",
+      "date": "2026-09-11",
+      "category": "夕食",
+      "name": "そうめん4束 ＋ 卵2個 ＋ つゆ200ml",
+      "nutrients": {
+        "calories": 920,
+        "protein": 33,
+        "fat": 13,
+        "carbs": 156,
+        "salt": null,
+        "fiber": null
+      },
+      "estimated": true,
+      "note": "Calories Clubの記録から移行。栄養値は概算。食塩・食物繊維は未確認。"
+    },
+    {
       "id": "2026-09-12-breakfast-1",
       "date": "2026-09-12",
       "category": "朝食",
