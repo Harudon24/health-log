@@ -47,9 +47,21 @@
           <div class="date-nav"><button id="prev-day" aria-label="前日へ">‹</button><button id="next-day" aria-label="翌日へ">›</button></div>
         </div>
         <p id="day-status" class="muted"></p>
+        <div class="goal-legend" aria-label="栄養目標の見方">
+          <span class="goal-chip want">しっかり取りたい</span><small>たんぱく質・食物繊維</small>
+          <span class="goal-chip range">範囲で調整</span><small>カロリー・脂質・炭水化物</small>
+          <span class="goal-chip limit">上限を意識</span><small>食塩</small>
+        </div>
         <div id="nutrient-cards" class="nutrient-grid"></div>
-        <p class="fine">点線が100%の目安。超過分も表示します。食塩は6g未満を上限の目安として表示（100%は上限到達）。未確認の栄養素は日合計に含めません。</p>
+        <p class="fine">100%は中央の基準値です。たんぱく質・食物繊維は最低ライン、脂質・炭水化物・カロリーは目安範囲、食塩は上限として見ます。</p>
       </section>
+
+      <section class="panel advice-panel">
+        <div class="section-head"><h2>この日のアドバイス</h2><span class="muted">推定値を含みます</span></div>
+        <div id="day-score" class="day-score"></div>
+        <div id="daily-advice"></div>
+      </section>
+
       <section class="panel">
         <div class="section-head"><h2>前日と比べる</h2><span id="comparison-date" class="muted"></span></div>
         <div id="comparison"></div>
@@ -62,7 +74,8 @@
         <summary>データの扱いについて</summary>
         <p>表示内容はGitHubの <code>data/health-log.json</code> を毎回読み込みます。食事の追加・修正はGitHub側のデータを更新して反映します。</p>
         <p>カロリーや各栄養素が概算の場合は「概算・推定」と表示します。未確認の値は0ではなく未確認として扱います。</p>
-        <p class="fine">GitHub Pagesの反映には少し時間がかかることがあります。「最新データを再読み込み」で再取得できます。</p>
+        <p>現在の減量目安は、カロリー1,800〜2,000kcal、たんぱく質は最低65g・できれば75g、脂質45〜60g、炭水化物230〜280g、食物繊維22g以上、食塩6g未満として評価します。</p>
+        <p class="fine">点数は医療的な評価ではなく、毎日の食事バランスを振り返るための目安です。GitHub Pagesの反映には少し時間がかかることがあります。</p>
       </details>
     </div>
   </div>
