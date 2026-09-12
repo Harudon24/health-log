@@ -13,7 +13,10 @@ const GUIDE={
   salt:{type:'maximum',max:6,target:6,role:'limit',roleLabel:'上限を意識',guideLabel:'上限 6g未満'},
   fiber:{type:'minimum',min:22,target:22,role:'want',roleLabel:'しっかり取りたい',guideLabel:'最低 22g'}
 };
-const SCORE_WEIGHTS={calories:25,protein:20,fiber:20,salt:15,fat:10,carbs:10};
+
+// 100点の内訳。減量・血圧対策で重要な項目を重めにする。
+const SCORE_WEIGHTS={calories:20,protein:20,fiber:20,salt:20,fat:15,carbs:5};
+const SCORE_NAMES={calories:'カロリー',protein:'P',fiber:'食物繊維',salt:'塩分',fat:'脂質',carbs:'炭水化物'};
 
 let state={version:1,targets:{calories:1900,protein:75,fat:55,carbs:250,salt:6,fiber:22},meals:[]};
 let selected=today(),month=selected.slice(0,7),updatedAt=null,loading=false;
@@ -40,27 +43,93 @@ function goalStatus(key,value){
   if(value>g.max)return {className:'high',text:`目安より ${fmt(value-g.max)}${M.nutrients.find(n=>n.key===key).unit} 多め`};
   return {className:'good',text:'目安範囲内'};
 }
+const clamp01=v=>Math.max(0,Math.min(1,v));
+
+// 点数は意図的に厳しめ。最低ラインでは満点にせず、「目標に近いほど高得点」にする。
 function scoreFactor(key,value){
   if(value===null)return null;
-  const g=GUIDE[key];
-  if(g.type==='minimum')return Math.min(1,value/g.min);
-  if(g.type==='maximum')return value<=g.max?1:Math.max(0,2-value/g.max);
-  if(value<g.min)return Math.max(0,value/g.min);
-  if(value>g.max)return Math.max(0,1-(value-g.max)/g.max);
-  return 1;
+  if(key==='calories'){
+    if(value>=1800&&value<=2000)return 1;
+    if(value<1800)return clamp01((value-1400)/400); // 1400以下は0点、1800で満点
+    return clamp01(1-(value-2000)/500);             // 2500以上は0点
+  }
+  if(key==='protein'){
+    if(value>=75)return 1;
+    if(value>=65)return .75+.25*(value-65)/10;      // 65gは75点相当、75gで満点
+    if(value>=50)return .35+.40*(value-50)/15;
+    return clamp01(.35*value/50);
+  }
+  if(key==='fiber')return clamp01(Math.pow(value/22,1.5)); // 不足時の減点をやや強める
+  if(key==='salt'){
+    if(value<=5)return 1;
+    if(value<=6)return 1-.30*(value-5);              // 6gで70点相当
+    if(value<=8)return .70-.30*(value-6);            // 8gで10点相当
+    if(value<=9)return .10-.10*(value-8);
+    return 0;
+  }
+  if(key==='fat'){
+    if(value>=45&&value<=60)return 1;
+    if(value<45){
+      if(value>=35)return .70+.30*(value-35)/10;
+      if(value>=25)return .40+.30*(value-25)/10;
+      return clamp01(.40*value/25);
+    }
+    if(value<=70)return 1-.50*(value-60)/10;         // 70gで50点相当
+    if(value<=80)return .50-.40*(value-70)/10;       // 80gで10点相当
+    if(value<=85)return .10-.10*(value-80)/5;
+    return 0;
+  }
+  if(key==='carbs'){
+    if(value>=230&&value<=280)return 1;
+    if(value<230){
+      if(value>=200)return .85+.15*(value-200)/30;
+      if(value>=150)return .65+.20*(value-150)/50;
+      return clamp01(.65*value/150);
+    }
+    if(value<=320)return 1-.20*(value-280)/40;
+    if(value<=380)return .80-.30*(value-320)/60;
+    return clamp01(.50-(value-380)/240);
+  }
+  return 0;
 }
+
+// 1日合計が整っていても、1食だけ極端に偏った場合は追加減点する。
+function mealSpikePenalty(meals){
+  if(!meals.length)return {points:0,reasons:[]};
+  const max=key=>Math.max(...meals.map(m=>typeof m.nutrients[key]==='number'?m.nutrients[key]:0));
+  let points=0;const reasons=[];
+  const salt=max('salt'),cal=max('calories'),fat=max('fat'),carbs=max('carbs');
+  if(salt>=6){points+=5;reasons.push('1食の塩分6g以上 -5');}
+  else if(salt>=4.5){points+=2;reasons.push('1食の塩分4.5g以上 -2');}
+  if(cal>=800){points+=3;reasons.push('1食800kcal以上 -3');}
+  if(fat>=30){points+=3;reasons.push('1食の脂質30g以上 -3');}
+  if(carbs>=130){points+=2;reasons.push('1食の炭水化物130g以上 -2');}
+  return {points:Math.min(10,points),reasons};
+}
+
 function dailyScore(meals){
   if(!meals.length)return null;
-  let earned=0,possible=0,missing=false;
+  let earned=0,missing=false;const parts=[];
   for(const [key,weight] of Object.entries(SCORE_WEIGHTS)){
     const value=totalValue(meals,key),factor=scoreFactor(key,value);
-    if(factor===null){missing=true;continue;}
-    possible+=weight;earned+=weight*factor;
+    if(factor===null){
+      // 未確認項目を除外すると点数が不自然に上がるため、厳しめに0点扱いして暫定表示。
+      missing=true;parts.push({key,label:SCORE_NAMES[key],points:0,max:weight});continue;
+    }
+    const points=weight*factor;earned+=points;
+    parts.push({key,label:SCORE_NAMES[key],points:Math.round(points),max:weight});
   }
-  if(!possible)return null;
-  return {value:Math.round(earned/possible*100),provisional:missing};
+  const spike=mealSpikePenalty(meals);
+  return {value:Math.max(0,Math.round(earned-spike.points)),provisional:missing,parts,penalty:spike.points,penaltyReasons:spike.reasons};
 }
-function scoreLabel(score){if(score>=90)return 'かなり良い';if(score>=80)return 'いい感じ';if(score>=70)return 'まずまず';if(score>=55)return '調整ポイントあり';return '改善余地あり';}
+function scoreLabel(score){
+  if(score>=90)return 'かなり良い';
+  if(score>=80)return '良い';
+  if(score>=70)return 'まずまず';
+  if(score>=60)return '要改善';
+  if(score>=50)return '改善点多め';
+  return 'かなり見直したい';
+}
 
 function buildAdvice(meals){
   if(!meals.length)return '<p class="muted">食事が記録されると、その日の不足・取りすぎをここにまとめます。</p>';
@@ -134,7 +203,7 @@ function render(){
   }).join('');
 
   const score=dailyScore(meals);
-  $('day-score').innerHTML=score?`<div class="score-ring"><strong>${score.value}</strong><small>/ 100</small></div><div><b>${scoreLabel(score.value)}</b><p>${score.provisional?'未確認値を除いた暫定点です。':'カロリー・PFC・食塩・食物繊維のバランス点です。'}</p></div>`:'<div class="muted">記録が入ると100点満点で表示します。</div>';
+  $('day-score').innerHTML=score?`<div class="score-ring"><strong>${score.value}</strong><small>/ 100</small></div><div><b>${scoreLabel(score.value)}</b><p>${score.provisional?'未確認項目を0点扱いした暫定点です。':'厳しめの減量バランス点です。80点以上で良好、90点以上はかなり優秀。'}</p><p>内訳：${score.parts.map(p=>`${p.label} ${p.points}/${p.max}`).join(' ・ ')}</p>${score.penalty?`<p>追加減点：-${score.penalty}点（${score.penaltyReasons.join('、')}）</p>`:''}</div>`:'<div class="muted">記録が入ると100点満点で表示します。</div>';
   $('daily-advice').innerHTML=buildAdvice(meals);
 
   $('comparison-date').textContent=`${previous.replaceAll('-','/')} → ${selected.replaceAll('-','/')}`;
