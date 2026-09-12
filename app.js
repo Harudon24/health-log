@@ -1,6 +1,6 @@
 'use strict';
 const M=HealthModel,$=id=>document.getElementById(id);
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
 const fmt=v=>new Intl.NumberFormat('ja-JP',{maximumFractionDigits:2}).format(v);
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
 let state={version:1,targets:{calories:2100,protein:70,fat:55,carbs:275,salt:6,fiber:null},meals:[]};
@@ -11,6 +11,23 @@ const forDay=date=>state.meals.filter(m=>m.date===date).sort((a,b)=>M.categories
 function amount(t,n){if(!t.known)return '未確認';return `${t.estimated?'約':''}${fmt(t.value)} ${n.unit}${t.missing?'（判明分）':''}`;}
 function chooseInitialDate(){const dates=[...new Set(state.meals.map(m=>m.date))].sort(),t=today();if(dates.includes(t))return t;const past=dates.filter(d=>d<=t);return past.at(-1)||dates.at(-1)||t;}
 function select(date){if(!M.validDate(date))return;selected=date;month=date.slice(0,7);render();}
+
+function mealNutrientLevel(key,value){
+  if(value===null||value===undefined||typeof value!=='number')return '';
+  const target=state.targets[key];
+  if(!target)return '';
+  const ratio=value/target;
+  if(key==='salt')return ratio>=1?'danger':ratio>=0.4?'warning':'';
+  if(['calories','fat','carbs'].includes(key))return ratio>=0.7?'danger':ratio>=0.4?'warning':'';
+  return '';
+}
+function mealNutrientHtml(m,n){
+  const value=m.nutrients[n.key];
+  if(value===null)return `<span class="meal-value-item">${n.label} <b>未確認</b></span>`;
+  const level=mealNutrientLevel(n.key,value);
+  const label=level==='danger'?'かなり高い':level==='warning'?'高め':'';
+  return `<span class="meal-value-item ${level}">${n.label} <b>${fmt(value)}${n.unit}</b>${label?`<em>${label}</em>`:''}</span>`;
+}
 
 async function loadData(preserveSelection=false){
   if(loading)return;loading=true;notice('GitHubの最新記録を読み込んでいます…');$('refresh-button').disabled=true;
@@ -44,7 +61,8 @@ function render(){
   $('comparison-date').textContent=`${previous.replaceAll('-','/')} → ${selected.replaceAll('-','/')}`;
   $('comparison').innerHTML=!meals.length||!prev.length?`<div class="empty compact">${!prev.length?'前日の記録はまだありません。':'選択日の記録はまだありません。'}<br><small>両日の記録がそろうと、栄養素ごとの差が表示されます。</small></div>`:`<div class="table-scroll"><table><thead><tr><th>栄養素</th><th>前日</th><th>選択日</th><th>前日との差</th></tr></thead><tbody>${M.nutrients.map(n=>{const a=M.total(prev,n.key),b=M.total(meals,n.key),valid=a.known&&b.known&&!a.missing&&!b.missing,diff=Math.round((b.value-a.value)*100)/100;return `<tr><th>${n.label}</th><td>${amount(a,n)}</td><td>${amount(b,n)}</td><td>${valid?`${a.estimated||b.estimated?'約 ':''}${diff>0?'+':''}${fmt(diff)} ${n.unit}`:'比較不可（未確認）'}</td></tr>`;}).join('')}</tbody></table></div>`;
   $('meal-count').textContent=`${meals.length}件`;
-  $('meals').innerHTML=meals.length?meals.map(m=>`<article class="panel meal"><div class="meal-top"><span class="meal-category">${esc(m.category)}</span>${m.estimated?'<span class="badge">概算・推定</span>':''}</div><h3>${esc(m.name)}</h3><div class="meal-values">${M.nutrients.map(n=>`<span>${n.label} <b>${m.nutrients[n.key]===null?'未確認':`${fmt(m.nutrients[n.key])}${n.unit}`}</b></span>`).join('')}</div>${m.note?`<p class="meal-note">${esc(m.note)}</p>`:''}</article>`).join(''):'<div class="panel empty">この日の食事記録はまだありません。</div>';
+  const guide='<p class="meal-alert-guide"><span class="guide-warning">高め</span> 1食で1日目安の40%以上　<span class="guide-danger">かなり高い</span> 70%以上（食塩は1日の上限以上で赤）</p>';
+  $('meals').innerHTML=meals.length?guide+meals.map(m=>`<article class="panel meal"><div class="meal-top"><span class="meal-category">${esc(m.category)}</span>${m.estimated?'<span class="badge">概算・推定</span>':''}</div><h3>${esc(m.name)}</h3><div class="meal-values">${M.nutrients.map(n=>mealNutrientHtml(m,n)).join('')}</div>${m.note?`<p class="meal-note">${esc(m.note)}</p>`:''}</article>`).join(''):'<div class="panel empty">この日の食事記録はまだありません。</div>';
 }
 
 function changeMonth(n){const d=new Date(month+'-15T12:00:00');d.setMonth(d.getMonth()+n);const y=d.getFullYear();if(y<1900||y>9999)return;month=`${y}-${String(d.getMonth()+1).padStart(2,'0')}`;renderCalendar();}
