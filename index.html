@@ -1,21 +1,72 @@
 <!doctype html>
 <html lang="ja">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#23634e"><title>health-log | 毎日の食事ノート</title><link rel="stylesheet" href="styles.css"><script defer src="data.js"></script><script defer src="model.js"></script><script defer src="app.js"></script></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#23634e">
+  <title>health-log | 毎日の食事ノート</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="model.js"></script>
+  <script defer src="app.js"></script>
+</head>
 <body>
-<header><a class="brand" href="./"><span class="logo">h.</span> health-log</a><span class="tagline">食べたものから、毎日を振り返る。</span><button id="settings-button">目標を設定</button></header>
+<header>
+  <a class="brand" href="./"><span class="logo">h.</span> health-log</a>
+  <span class="tagline">食べたものから、毎日を振り返る。</span>
+  <button id="refresh-button">最新データを再読み込み</button>
+</header>
 <main>
-<section class="intro"><div><p class="eyebrow">YOUR DAILY FOOD NOTE</p><h1>今日の食事を、ひと目で。</h1><p>昨日と比べながら、自分のペースで記録しよう。</p></div><button class="primary" id="add-button">＋ 食事を記録</button></section>
-<p id="notice" role="status" hidden></p>
-<div class="layout"><aside>
-<section class="panel calendar-panel"><div class="section-head"><h2 id="month-title"></h2><div><button id="prev-month" aria-label="前の月">‹</button><button id="next-month" aria-label="次の月">›</button></div></div><div class="weekdays" aria-hidden="true"><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span><span>日</span></div><div id="calendar" class="calendar" aria-label="日付を選ぶ"></div><p class="calendar-key"><span>●</span> 記録がある日</p><button id="today-button" class="wide">今日へ移動</button></section>
-<section class="panel storage"><h2>記録を手元に</h2><p>変更はこのブラウザーに自動保存されます。別の端末へはバックアップで移せます。</p><button id="export-button" class="wide">バックアップを書き出す</button><label class="import-label">バックアップを読み込む<input id="import-file" type="file" accept="application/json,.json"></label><p class="fine">GitHubへの自動同期はありません。</p></section>
-</aside><div class="content">
-<section class="panel summary"><div class="section-head"><div><p class="eyebrow">DAILY OVERVIEW</p><h2 id="day-title"></h2></div><div class="date-nav"><button id="prev-day" aria-label="前日へ">‹</button><button id="next-day" aria-label="翌日へ">›</button></div></div><p id="day-status" class="muted"></p><div id="nutrient-cards" class="nutrient-grid"></div><p class="fine">点線が100%の目安。超過分も表示します。食塩は6g未満を上限の目安として表示（100%は上限到達）。</p></section>
-<section class="panel"><div class="section-head"><h2>前日と比べる</h2><span id="comparison-date" class="muted"></span></div><div id="comparison"></div></section>
-<section><div class="section-head meals-heading"><h2>食べたもの</h2><span id="meal-count" class="muted"></span></div><div id="meals"></div></section>
-<details class="panel sources"><summary>初期データと推定値について</summary><p>2026年9月12日のカロリー・PFCはご本人の概算値をそのまま記録。食品ごとの内訳がないため、食事単位の合算です。食物繊維は未確認です。</p><p>朝食の塩分はカロリーメイトの味が未指定のため約0.7g（参考範囲0.44〜0.94g）。バナナの塩分はこの概算では0gと仮定しています。</p><p>昼食は公式のサラダ全量0.98gを参考に、ドレッシング半量で約0.7gと仮置き（0.49〜0.98g）。本体・ドレッシング別の値がないため、全体を単純に半分にはしていません。</p><p>間食は豆腐バー公式値1gを使用（同一商品と仮定）。夕食はそばの正確な商品、ドレッシングの容量、汁の残量が不明のため塩分は未確認。汁を飲み干していないことを記録しています。日合計の塩分は判明分のみで、1日分の総量ではありません。</p><ul><li><a href="https://www.otsuka.co.jp/nutraceutical/products/caloriemate/" target="_blank" rel="noreferrer">大塚製薬：カロリーメイトの公式栄養値</a></li><li><a href="https://www.sej.co.jp/products/a/item/104119" target="_blank" rel="noreferrer">セブン‐イレブン：ロメインレタスのシーザーサラダ</a></li><li><a href="https://www.sej.co.jp/products/a/item/250228/" target="_blank" rel="noreferrer">セブン‐イレブン：味しみひじきと枝豆の豆腐バー</a></li></ul><p class="fine">確認日：2026-09-12。地域・商品の改訂で値が変わるため、手元の包装を優先して編集してください。目標値はご指定の初期設定で、変更できます。</p></details>
-</div></div>
-</main><footer>health-log <span>小さな記録を、毎日の習慣に。</span></footer>
-<dialog id="meal-dialog"><form id="meal-form"><div class="section-head"><h2 id="form-title">食事を記録</h2><button type="button" data-close="meal-dialog" aria-label="閉じる">×</button></div><input type="hidden" name="id"><div class="form-grid"><label>日付<input type="date" name="date" required></label><label>食事<select name="category"><option>朝食</option><option>昼食</option><option>間食</option><option>夕食</option><option>その他</option></select></label></div><label>食べたものの名前<textarea name="name" maxlength="500" required rows="2" placeholder="例：ごはん＋焼き鮭＋サラダ"></textarea></label><div id="nutrient-inputs" class="form-grid"></div><p class="fine">未確認の値は空欄にしてください。0gと区別して集計します。</p><label class="check"><input type="checkbox" name="estimated">栄養値に概算・推定を含む</label><label>食べ方・推定根拠・出典メモ<textarea name="note" rows="3" maxlength="3000" placeholder="例：ドレッシング半分、汁を残した"></textarea></label><div class="form-actions"><button type="button" data-close="meal-dialog">キャンセル</button><button class="primary" type="submit">保存する</button></div></form></dialog>
-<dialog id="settings-dialog"><form id="settings-form"><div class="section-head"><h2>1日の目標値</h2><button type="button" data-close="settings-dialog" aria-label="閉じる">×</button></div><p class="muted">メーターの100%になる値です。食塩は上限として扱います。</p><div id="target-inputs" class="form-grid"></div><p class="fine">食物繊維は任意です。目標を設定するとメーターが表示されます。</p><div class="form-actions"><button type="button" data-close="settings-dialog">キャンセル</button><button class="primary" type="submit">保存する</button></div></form></dialog>
-</body></html>
+  <section class="intro">
+    <div>
+      <p class="eyebrow">YOUR DAILY FOOD NOTE</p>
+      <h1>今日の食事を、ひと目で。</h1>
+      <p>このチャットからGitHubへ記録した内容を、そのまま表示します。</p>
+    </div>
+  </section>
+  <p id="notice" role="status" hidden></p>
+  <div class="layout">
+    <aside>
+      <section class="panel calendar-panel">
+        <div class="section-head"><h2 id="month-title"></h2><div><button id="prev-month" aria-label="前の月">‹</button><button id="next-month" aria-label="次の月">›</button></div></div>
+        <div class="weekdays" aria-hidden="true"><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span><span>日</span></div>
+        <div id="calendar" class="calendar" aria-label="日付を選ぶ"></div>
+        <p class="calendar-key"><span>●</span> 記録がある日</p>
+        <button id="today-button" class="wide">今日へ移動</button>
+      </section>
+      <section class="panel storage">
+        <h2>GitHubを正本にしています</h2>
+        <p>食事データと目標値は <code>data/health-log.json</code> に保存。ブラウザーのlocalStorageは使いません。</p>
+        <p id="source-status" class="fine"></p>
+        <a class="wide source-link" href="https://github.com/Harudon24/health-log/blob/main/data/health-log.json" target="_blank" rel="noreferrer">GitHubの記録を見る</a>
+      </section>
+    </aside>
+    <div class="content">
+      <section class="panel summary">
+        <div class="section-head">
+          <div><p class="eyebrow">DAILY OVERVIEW</p><h2 id="day-title"></h2></div>
+          <div class="date-nav"><button id="prev-day" aria-label="前日へ">‹</button><button id="next-day" aria-label="翌日へ">›</button></div>
+        </div>
+        <p id="day-status" class="muted"></p>
+        <div id="nutrient-cards" class="nutrient-grid"></div>
+        <p class="fine">点線が100%の目安。超過分も表示します。食塩は6g未満を上限の目安として表示（100%は上限到達）。未確認の栄養素は日合計に含めません。</p>
+      </section>
+      <section class="panel">
+        <div class="section-head"><h2>前日と比べる</h2><span id="comparison-date" class="muted"></span></div>
+        <div id="comparison"></div>
+      </section>
+      <section>
+        <div class="section-head meals-heading"><h2>食べたもの</h2><span id="meal-count" class="muted"></span></div>
+        <div id="meals"></div>
+      </section>
+      <details class="panel sources">
+        <summary>データの扱いについて</summary>
+        <p>表示内容はGitHubの <code>data/health-log.json</code> を毎回読み込みます。食事の追加・修正はGitHub側のデータを更新して反映します。</p>
+        <p>カロリーや各栄養素が概算の場合は「概算・推定」と表示します。未確認の値は0ではなく未確認として扱います。</p>
+        <p class="fine">GitHub Pagesの反映には少し時間がかかることがあります。「最新データを再読み込み」で再取得できます。</p>
+      </details>
+    </div>
+  </div>
+</main>
+<footer>health-log <span>小さな記録を、毎日の習慣に。</span></footer>
+</body>
+</html>
