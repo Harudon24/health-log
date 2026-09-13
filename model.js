@@ -8,7 +8,19 @@
     if(!data||data.version!==1||!Array.isArray(data.meals)||data.meals.length>50000||!data.targets)throw Error('対応するバックアップ形式ではありません。');
     const targets={};for(const n of nutrients){const v=data.targets[n.key];if(n.key==='fiber'&&v===null){targets[n.key]=null;continue;}if(typeof v!=='number'||!Number.isFinite(v)||v<=0||v>100000)throw Error('目標値を確認してください。');targets[n.key]=v;}
     const ids=new Set();const meals=data.meals.map(m=>{if(!m||typeof m.id!=='string'||!m.id||m.id.length>100||ids.has(m.id)||!validDate(m.date)||!categories.includes(m.category)||typeof m.name!=='string'||!m.name.trim()||m.name.length>500||typeof m.note!=='string'||m.note.length>3000||typeof m.estimated!=='boolean'||!m.nutrients)throw Error('食事データの形式を確認してください。');ids.add(m.id);const values={};for(const n of nutrients){const v=m.nutrients[n.key]??null;if(v!==null&&(typeof v!=='number'||!Number.isFinite(v)||v<0||v>100000))throw Error('栄養値を確認してください。');values[n.key]=v;}return {id:m.id,date:m.date,category:m.category,name:m.name.trim(),note:m.note,estimated:m.estimated,nutrients:values};});
-    return {version:1,targets,meals};
+    // Optional additive field: existing version 1 meal logs remain compatible.
+    const rawWeights=data.weights===undefined?[]:data.weights;
+    if(!Array.isArray(rawWeights)||rawWeights.length>50000)throw Error('体重履歴の形式を確認してください。');
+    const dates=new Set();
+    const weights=rawWeights.map(w=>{
+      if(!w||!validDate(w.date)||dates.has(w.date)||typeof w.kg!=='number'||!Number.isFinite(w.kg)||w.kg<=0||w.kg>1000)throw Error('体重は日付ごとに1件、0より大きいkgで記録してください。');
+      dates.add(w.date);return {date:w.date,kg:w.kg};
+    }).sort((a,b)=>a.date.localeCompare(b.date));
+    return {version:1,targets,meals,weights};
   }
-  const api={nutrients,categories,validDate,shiftDate,total,validate};root.HealthModel=api;if(typeof module!=='undefined')module.exports=api;
+  function weightHistory(weights){
+    const sorted=[...weights].sort((a,b)=>b.date.localeCompare(a.date));
+    return sorted.map((w,i)=>({...w,previousDate:sorted[i+1]?.date??null,difference:sorted[i+1]?Math.round((w.kg-sorted[i+1].kg)*10)/10:null}));
+  }
+  const api={weightHistory,nutrients,categories,validDate,shiftDate,total,validate};root.HealthModel=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);

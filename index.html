@@ -35,12 +35,19 @@
       </section>
       <section class="panel storage">
         <h2>GitHubを正本にしています</h2>
-        <p>食事データと目標値は <code>data/health-log.json</code> に保存。ブラウザーのlocalStorageは使いません。</p>
+        <p>食事・体重データと目標値は <code>data/health-log.json</code> に保存。ブラウザーのlocalStorageは使いません。</p>
         <p id="source-status" class="fine"></p>
         <a class="wide source-link" href="https://github.com/Harudon24/health-log/blob/main/data/health-log.json" target="_blank" rel="noreferrer">GitHubの記録を見る</a>
       </section>
     </aside>
     <div class="content">
+      <section class="panel weight-panel" aria-labelledby="weight-title">
+        <div class="section-head"><div><p class="eyebrow">BODY WEIGHT</p><h2 id="weight-title">体重の記録</h2></div><span class="muted">全期間の履歴</span></div>
+        <div id="weight-summary" class="weight-summary"></div>
+        <p id="selected-weight" class="muted"></p>
+        <div id="weight-history"></div>
+        <p class="fine">前回比は、ひとつ前に体重を記録した日との差です。</p>
+      </section>
       <section class="panel summary">
         <div class="section-head">
           <div><p class="eyebrow">DAILY OVERVIEW</p><h2 id="day-title"></h2></div>
@@ -72,7 +79,7 @@
       </section>
       <details class="panel sources">
         <summary>データの扱いについて</summary>
-        <p>表示内容はGitHubの <code>data/health-log.json</code> を毎回読み込みます。食事の追加・修正はGitHub側のデータを更新して反映します。</p>
+        <p>表示内容はGitHubの <code>data/health-log.json</code> を毎回読み込みます。食事・体重の追加・修正はGitHub側のデータを更新して反映します。</p>
         <p>カロリーや各栄養素が概算の場合は「概算・推定」と表示します。未確認の値は0ではなく未確認として扱います。</p>
         <p>現在の減量目安は、カロリー1,800〜2,000kcal、たんぱく質は最低65g・できれば75g、脂質45〜60g、炭水化物230〜280g、食物繊維22g以上、食塩6g未満として評価します。</p>
         <p class="fine">点数は医療的な評価ではなく、毎日の食事バランスを振り返るための目安です。GitHub Pagesの反映には少し時間がかかることがあります。</p>

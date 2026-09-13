@@ -18,13 +18,13 @@ const GUIDE={
 const SCORE_WEIGHTS={calories:20,protein:20,fiber:20,salt:20,fat:15,carbs:5};
 const SCORE_NAMES={calories:'カロリー',protein:'P',fiber:'食物繊維',salt:'塩分',fat:'脂質',carbs:'炭水化物'};
 
-let state={version:1,targets:{calories:1900,protein:75,fat:55,carbs:250,salt:6,fiber:22},meals:[]};
+let state={version:1,targets:{calories:1900,protein:75,fat:55,carbs:250,salt:6,fiber:22},meals:[],weights:[]};
 let selected=today(),month=selected.slice(0,7),updatedAt=null,loading=false;
 
 function notice(message){const n=$('notice');n.textContent=message;n.hidden=!message;}
 const forDay=date=>state.meals.filter(m=>m.date===date).sort((a,b)=>M.categories.indexOf(a.category)-M.categories.indexOf(b.category));
 function amount(t,n){if(!t.known)return '未確認';return `${t.estimated?'約':''}${fmt(t.value)} ${n.unit}${t.missing?'（判明分）':''}`;}
-function chooseInitialDate(){const dates=[...new Set(state.meals.map(m=>m.date))].sort(),t=today();if(dates.includes(t))return t;const past=dates.filter(d=>d<=t);return past.at(-1)||dates.at(-1)||t;}
+function chooseInitialDate(){const dates=[...new Set([...state.meals,...state.weights].map(m=>m.date))].sort(),t=today();if(dates.includes(t))return t;const past=dates.filter(d=>d<=t);return past.at(-1)||dates.at(-1)||t;}
 function select(date){if(!M.validDate(date))return;selected=date;month=date.slice(0,7);render();}
 
 function totalValue(meals,key){const t=M.total(meals,key);return t.known&&!t.missing?t.value:null;}
@@ -188,14 +188,26 @@ async function loadData(preserveSelection=false){
 
 function renderCalendar(){
   const [year,mo]=month.split('-').map(Number);$('month-title').textContent=`${year}年 ${mo}月`;
-  const start=new Date(year,mo-1,1),offset=(start.getDay()+6)%7,days=new Date(year,mo,0).getDate(),recorded=new Set(state.meals.map(m=>m.date));
+  const start=new Date(year,mo-1,1),offset=(start.getDay()+6)%7,days=new Date(year,mo,0).getDate(),recorded=new Set([...state.meals,...state.weights].map(m=>m.date));
   $('calendar').innerHTML=Array.from({length:offset},()=>'<span></span>').join('')+Array.from({length:days},(_,i)=>{const date=`${month}-${String(i+1).padStart(2,'0')}`,has=recorded.has(date);return `<button data-date="${date}" class="day ${date===selected?'selected':''} ${date===today()?'today':''} ${has?'recorded':''}" aria-pressed="${date===selected}" aria-label="${date}${has?' 記録あり':''}">${i+1}<span aria-hidden="true">${has?'•':'&nbsp;'}</span></button>`;}).join('');
 }
 
+function renderWeights(){
+  const history=M.weightHistory(state.weights),latest=history[0];
+  const delta=value=>value===null?'比較なし':`${value>0?'+':value<0?'−':''}${Math.abs(value).toFixed(1)} kg`;
+  $('weight-summary').innerHTML=latest?
+    `<div><p class="muted">直近体重 · ${latest.date.replaceAll('-','/')}</p><p class="weight-value">${latest.kg.toFixed(1)}<small>kg</small></p></div><div><p class="muted">前回比</p><p class="weight-difference">${delta(latest.difference)}</p><p class="fine">${latest.previousDate?latest.previousDate.replaceAll('-','/')+' の記録と比較':'初回の記録です'}</p></div>`:
+    '<p class="muted">体重の記録はまだありません。</p>';
+  const chosen=history.find(w=>w.date===selected);
+  $('selected-weight').textContent=`選択日（${selected.replaceAll('-','/')}）: ${chosen?chosen.kg.toFixed(1)+' kg':'体重未記録'}`;
+  $('weight-history').innerHTML=history.length?
+    `<div class="table-scroll"><table><caption class="muted">体重履歴（新しい順）</caption><thead><tr><th scope="col">記録日</th><th scope="col">体重</th><th scope="col">前回比</th></tr></thead><tbody>${history.map(w=>`<tr><th scope="row">${w.date.replaceAll('-','/')}</th><td>${w.kg.toFixed(1)} kg</td><td>${delta(w.difference)}${w.previousDate?`<small class="weight-previous">${w.previousDate.replaceAll('-','/')} 比</small>`:''}</td></tr>`).join('')}</tbody></table></div>`:'';
+}
+
 function render(){
-  renderCalendar();const meals=forDay(selected),previous=M.shiftDate(selected,-1),prev=forDay(previous);
+  renderCalendar();renderWeights();const meals=forDay(selected),previous=M.shiftDate(selected,-1),prev=forDay(previous);
   $('day-title').textContent=new Date(selected+'T12:00:00').toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
-  $('day-status').textContent=meals.length?`${meals.length}件の食事を記録${meals.some(m=>m.estimated)?' · 概算・推定値を含みます':''}`:'この日の記録はありません。';
+  $('day-status').textContent=meals.length?`${meals.length}件の食事を記録${meals.some(m=>m.estimated)?' · 概算・推定値を含みます':''}`:'この日の食事記録はありません。';
   $('source-status').textContent=updatedAt?`GitHub記録の更新日: ${updatedAt}`:'GitHubの data/health-log.json を表示中';
   $('nutrient-cards').innerHTML=M.nutrients.map(n=>{
     const t=M.total(meals,n.key),g=GUIDE[n.key],target=g.target,ratio=target&&t.known?t.value/target*100:null,scale=ratio===null?150:Math.max(150,Math.ceil(ratio/50)*50),status=t.known?goalStatus(n.key,t.value):{className:'unknown',text:'未確認'},over=status.className==='high',under=status.className==='low';
