@@ -22,12 +22,13 @@
   function chart(points){
     if(!points.length)return '<p class="empty">この期間の体重記録はありません。</p>';
     const count=mode==='month'?new Date(year,month,0).getDate():12;
-    const min=Math.min(...points.map(p=>p.kg)),max=Math.max(...points.map(p=>p.kg));
-    const low=Math.max(0,Math.floor((min-.5)*2)/2),high=Math.ceil((max+.5)*2)/2;
+    const max=Math.max(...points.map(p=>p.kg));
+    const low=90,high=Math.max(100,Math.ceil((max+.5)/5)*5);
     const width=root.innerWidth<=600?360:760;
     const x=n=>60+(n-1)/(count-1)*(width-90),y=n=>250-(n-low)/(high-low)*220;
     let svg='<svg class="trend-chart" viewBox="0 0 '+width+' 300" role="img" aria-labelledby="graph-title graph-desc"><title id="graph-title">'+$('period-title').textContent+'の体重推移</title><desc id="graph-desc">'+(mode==='month'?'日ごとの実測体重':'記録日の体重から計算した月平均')+'。詳しい数値は下の表で確認できます。</desc>';
-    for(let i=0;i<=4;i++){const value=low+(high-low)*i/4;svg+=`<line class="grid" x1="60" x2="${width-30}" y1="${y(value)}" y2="${y(value)}"/><text x="50" y="${y(value)+4}" text-anchor="end">${value.toFixed(1)}</text>`;}
+    for(let value=low;value<=high;value+=5){svg+=`<line class="grid" x1="60" x2="${width-30}" y1="${y(value)}" y2="${y(value)}"/><text x="50" y="${y(value)+4}" text-anchor="end">${value.toFixed(1)}</text>`;}
+    svg+=`<line class="target-line" x1="60" x2="${width-30}" y1="${y(95)}" y2="${y(95)}" stroke="#b48231" stroke-width="2" stroke-dasharray="7 5"/><text x="${width-30}" y="${y(95)-10}" text-anchor="end" style="fill:#8a641d;font-weight:700">目標 95kg</text>`;
     svg+='<text x="12" y="17">kg</text>';
     const ticks=mode==='month'?(width<600?[1,10,20,count]:[1,5,10,15,20,25,count]):[1,3,6,9,12];
     for(const tick of [...new Set(ticks)])svg+=`<text x="${x(tick)}" y="280" text-anchor="middle">${tick}${mode==='month'?'日':'月'}</text>`;
