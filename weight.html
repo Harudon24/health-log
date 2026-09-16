@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#23634e">
+  <title>体重の推移 | health-log</title>
+  <link rel="stylesheet" href="styles.css?v=20260916-trends-1">
+  <link rel="stylesheet" href="weight.css?v=20260916-trends-1">
+  <script defer src="model.js?v=20260916-trends-1"></script>
+  <script defer src="weight.js?v=20260916-trends-1"></script>
+</head>
+<body>
+<header>
+  <a class="brand" href="./"><span class="logo">h.</span> health-log</a>
+  <a class="source-link" href="./">食事の記録へ</a>
+  <button id="refresh-button">最新データを再読み込み</button>
+</header>
+<main class="weight-page">
+  <section class="intro"><div><p class="eyebrow">BODY WEIGHT TRENDS</p><h1>体重の推移</h1><p>月ごと、年ごとに、記録を振り返る。</p></div></section>
+  <p id="notice" role="status">体重の記録を読み込んでいます…</p>
+  <section class="panel">
+    <div class="trend-controls">
+      <div class="view-switch" role="group" aria-label="表示期間"><button id="monthly" aria-pressed="true">月</button><button id="yearly" aria-pressed="false">年</button></div>
+      <label>年 <select id="year" aria-label="表示する年"></select></label>
+      <label id="month-control">月 <select id="month" aria-label="表示する月"></select></label>
+      <div class="period-nav"><button id="previous" aria-label="前の期間">‹</button><button id="next" aria-label="次の期間">›</button></div>
+    </div>
+    <h2 id="period-title"></h2>
+    <div id="trend-summary" class="trend-summary" aria-live="polite"></div>
+    <div id="chart"></div>
+    <p id="chart-note" class="fine"></p>
+    <p class="fine">縦軸は記録に合わせた範囲です。未記録の値は補完していません。増減は良し悪しの判定ではなく、記録の差を示します。</p>
+  </section>
+  <section class="panel history-panel"><h2>選択期間の記録</h2><div id="history"></div></section>
+</main>
+<footer>health-log <span>小さな記録を、毎日の習慣に。</span></footer>
+</body>
+</html>

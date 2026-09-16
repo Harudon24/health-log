@@ -192,20 +192,8 @@ function renderCalendar(){
   $('calendar').innerHTML=Array.from({length:offset},()=>'<span></span>').join('')+Array.from({length:days},(_,i)=>{const date=`${month}-${String(i+1).padStart(2,'0')}`,has=recorded.has(date);return `<button data-date="${date}" class="day ${date===selected?'selected':''} ${date===today()?'today':''} ${has?'recorded':''}" aria-pressed="${date===selected}" aria-label="${date}${has?' 記録あり':''}">${i+1}<span aria-hidden="true">${has?'•':'&nbsp;'}</span></button>`;}).join('');
 }
 
-function renderWeights(){
-  const history=M.weightHistory(state.weights),latest=history[0];
-  const delta=value=>value===null?'比較なし':`${value>0?'+':value<0?'−':''}${Math.abs(value).toFixed(1)} kg`;
-  $('weight-summary').innerHTML=latest?
-    `<div><p class="muted">直近体重 · ${latest.date.replaceAll('-','/')}</p><p class="weight-value">${latest.kg.toFixed(1)}<small>kg</small></p></div><div><p class="muted">前回比</p><p class="weight-difference">${delta(latest.difference)}</p><p class="fine">${latest.previousDate?latest.previousDate.replaceAll('-','/')+' の記録と比較':'初回の記録です'}</p></div>`:
-    '<p class="muted">体重の記録はまだありません。</p>';
-  const chosen=history.find(w=>w.date===selected);
-  $('selected-weight').textContent=`選択日（${selected.replaceAll('-','/')}）: ${chosen?chosen.kg.toFixed(1)+' kg':'体重未記録'}`;
-  $('weight-history').innerHTML=history.length?
-    `<div class="table-scroll"><table><caption class="muted">体重履歴（新しい順）</caption><thead><tr><th scope="col">記録日</th><th scope="col">体重</th><th scope="col">前回比</th></tr></thead><tbody>${history.map(w=>`<tr><th scope="row">${w.date.replaceAll('-','/')}</th><td>${w.kg.toFixed(1)} kg</td><td>${delta(w.difference)}${w.previousDate?`<small class="weight-previous">${w.previousDate.replaceAll('-','/')} 比</small>`:''}</td></tr>`).join('')}</tbody></table></div>`:'';
-}
-
 function render(){
-  renderCalendar();renderWeights();const meals=forDay(selected),previous=M.shiftDate(selected,-1),prev=forDay(previous);
+  renderCalendar();const meals=forDay(selected),previous=M.shiftDate(selected,-1),prev=forDay(previous);
   $('day-title').textContent=new Date(selected+'T12:00:00').toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
   $('day-status').textContent=meals.length?`${meals.length}件の食事を記録${meals.some(m=>m.estimated)?' · 概算・推定値を含みます':''}`:'この日の食事記録はありません。';
   $('source-status').textContent=updatedAt?`GitHub記録の更新日: ${updatedAt}`:'GitHubの data/health-log.json を表示中';
